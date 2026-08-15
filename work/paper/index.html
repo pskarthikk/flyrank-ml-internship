@@ -1,0 +1,120 @@
+<!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'>
+<title>Search Intelligence for Content Refresh Prioritization</title>
+<style>body{font-family:system-ui;max-width:980px;margin:auto;padding:35px;line-height:1.65}table{border-collapse:collapse;width:100%}th,td{border:1px solid #ddd;padding:8px}img{max-width:100%}</style></head><body>
+<h1>Search Intelligence for Content Refresh Prioritization Using Machine Learning</h1>
+<p><b>FlyRank Machine Learning Internship Capstone</b></p>
+<h2>Abstract</h2>
+<p>This capstone asks which content pages should be prioritized for review so editors can focus on pages with the highest measured potential for improvement.</p><p>Using the supplied FlyRank 30,000-record Search Intelligence dataset, the workflow audits the data, defines a three-level refresh-priority label from observed trend information, and trains a Random Forest using structural, content, and market attributes that are excluded from target construction.</p><p>The model is evaluated on a client-grouped holdout containing 7 unseen clients, with preprocessing fitted only on training data and target-generating performance variables excluded from the feature set.</p><p>The leakage-audited Random Forest achieved 53.07% accuracy and 50.35% balanced accuracy, compared with 51.10% and 33.33% for the majority baseline.</p><p>The resulting ranking is directional editorial decision support: high-scoring pages should be reviewed first, verified by editors, and evaluated separately if a refresh intervention is later performed.</p>
+<h2>Introduction / Problem statement</h2><p>This project supports editorial prioritization by ranking pages for human review. It is decision support, not an autonomous publishing system.</p>
+<h2>Data</h2><p>The supplied FlyRank Search Intelligence dataset contains 30,000 records and 44 columns. No client names, domains, private queries, credentials, or raw exports are published.</p>
+<h2>Methodology</h2><p><b>Validation:</b> 20% client-grouped holdout, seed 42.</p><p><b>Model:</b> Random Forest with training-fitted preprocessing.</p><p><b>Leakage control:</b> target-generating performance variables excluded from model inputs.</p>
+<h2>Results</h2>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Method</th>
+      <th>Accuracy</th>
+      <th>Balanced Accuracy</th>
+      <th>Macro F1</th>
+      <th>Weighted F1</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Random Forest</td>
+      <td>0.530748</td>
+      <td>0.503524</td>
+      <td>0.480360</td>
+      <td>0.548271</td>
+    </tr>
+    <tr>
+      <td>Majority baseline</td>
+      <td>0.510952</td>
+      <td>0.333333</td>
+      <td>0.225444</td>
+      <td>0.345573</td>
+    </tr>
+  </tbody>
+</table>
+<p>Random Forest accuracy: <b>53.07%</b>.</p><p>Balanced accuracy: <b>50.35%</b>.</p>
+<img src='../figures/confusion_matrix.png' alt='Confusion matrix'>
+<h3>Feature importance</h3>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>feature</th>
+      <th>importance</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>num__impressions_prev_30d</td>
+      <td>0.32058</td>
+    </tr>
+    <tr>
+      <td>num__sessions_prev_30d</td>
+      <td>0.09941</td>
+    </tr>
+    <tr>
+      <td>num__clicks_prev_30d</td>
+      <td>0.06957</td>
+    </tr>
+    <tr>
+      <td>num__content_age_days</td>
+      <td>0.06704</td>
+    </tr>
+    <tr>
+      <td>num__char_count</td>
+      <td>0.04603</td>
+    </tr>
+    <tr>
+      <td>num__word_count</td>
+      <td>0.04565</td>
+    </tr>
+    <tr>
+      <td>cat__model_used_gemini-3-flash-preview</td>
+      <td>0.04463</td>
+    </tr>
+    <tr>
+      <td>num__days_since_last_update</td>
+      <td>0.03531</td>
+    </tr>
+    <tr>
+      <td>cat__content_type_feedly article</td>
+      <td>0.02256</td>
+    </tr>
+    <tr>
+      <td>num__search_volume</td>
+      <td>0.02181</td>
+    </tr>
+    <tr>
+      <td>num__age_tier_order</td>
+      <td>0.02066</td>
+    </tr>
+    <tr>
+      <td>num__competition</td>
+      <td>0.01539</td>
+    </tr>
+  </tbody>
+</table>
+<img src='../figures/feature_importance.png' alt='Feature importance'>
+<h2>Limitations &amp; honest framing</h2><ul><li>Bounded anonymized sample.</li><li>Association/prioritization rather than causal intervention evidence.</li><li>No claim about Google's algorithm or guaranteed recovery.</li></ul>
+<h2>Ranked recommendations</h2><ol><li>Start with highest scores.</li><li>Check reason codes and trend.</li><li>Verify manually.</li><li>Evaluate later refresh outcomes separately.</li></ol>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>action</th>
+      <th>pages</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>priority_refresh_review</td>
+      <td>100</td>
+    </tr>
+  </tbody>
+</table>
+<img src='../figures/action_playbook.png' alt='Action playbook'>
+<h2>Reproducibility</h2><ul><li>Notebook: work/notebooks/FinalCapstone.ipynb</li><li>Seed: 42</li><li>Validation: 20% client-grouped holdout</li><li>Repository: https://github.com/pskarthikk/flyrank-ml-internship</li></ul>
+<h2>Acknowledgments &amp; data credit</h2><p><b>Built on the FlyRank ML Internship dataset.</b></p><p>https://flyrank.ai</p>
+</body></html>
